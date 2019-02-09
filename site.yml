@@ -1,0 +1,8 @@
+---
+- hosts: 
+    - localhosts
+  gather_facts: False
+  become: False
+  pre_tasks:
+    - name: Ping
+      ping:

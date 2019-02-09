@@ -1,0 +1,7 @@
+---
+localhosts:
+  hosts:
+    localhost:
+      ansible_connection: local
+      ansible_user: ssmiley
+      #ansible_become_pass: "{{ password_var_here }}"

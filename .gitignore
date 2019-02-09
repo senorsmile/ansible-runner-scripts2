@@ -1,0 +1,10 @@
+# pipenv
+Pipfile
+Pipfile.lock
+
+# vim
+*.swo
+*.swp
+
+# ansible
+*.retry
