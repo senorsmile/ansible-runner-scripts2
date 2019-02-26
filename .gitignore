@@ -1,6 +1,6 @@
-# pipenv
-Pipfile
-Pipfile.lock
+## pipenv
+./Pipfile
+./Pipfile.lock
 
 # vim
 *.swo
