@@ -26,6 +26,20 @@ return_dir() {
   popd &>/dev/null
 }
 
+symlink_src_dir() {
+  # get the actual dir
+  # when this is run as a symlink
+
+  SOURCE="${BASH_SOURCE[0]}"
+  while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
+    DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    [[ $SOURCE != /* ]] && SOURCE="$DIR/$SOURCE" # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
+  done
+  DIR="$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )"
+  echo "${DIR}"
+}
+
 inventory_checkout() {
   # do nothing if inventoryrepo is not defined
   if [[ "${inventoryrepo+DEFINED}" ]]; then
@@ -73,24 +87,28 @@ pipenv_init() {
     exit 1
   fi
 
+  # get real dir (in case symlink)
+  local realdir=$(symlink_src_dir)
+
   # create symlink for Pipfile
-  if [[ ! "./Pipfile" -ef "ansible_${ansiblever}/Pipfile" ]]; then
+  if [[ ! "./Pipfile" -ef "${realdir}/ansible_${ansiblever}/Pipfile" ]]; then
     #rm "./Pipfile"
-    ln -s "ansible_${ansiblever}/Pipfile"
+    ln -s "${realdir}/ansible_${ansiblever}/Pipfile"
   fi
 
   # create symlink for Pipfile.lock (and pipenv install if not there)
-  if [[ ! "./Pipfile.lock" -ef "ansible_${ansiblever}/Pipfile.lock" ]]; then
+  if [[ ! "./Pipfile.lock" -ef "${realdir}/ansible_${ansiblever}/Pipfile.lock" ]]; then
 
-    if [[ ! -s "./ansible_${ansiblever}/Pipfile.lock" ]]; then
+    if [[ ! -s "${realdir}/ansible_${ansiblever}/Pipfile.lock" ]]; then
       echo "Pipfile.lock does not exist.  Installing..."
-      cd "ansible_${ansiblever}"
+      save_dir
+      cd "${realdir}/ansible_${ansiblever}"
       pipenv install
-      cd ..
+      return_dir
     fi
 
     #rm "./Pipfile.lock"
-    ln -s "ansible_${ansiblever}/Pipfile.lock"
+    ln -s "${realdir}/ansible_${ansiblever}/Pipfile.lock"
   fi
 
 
