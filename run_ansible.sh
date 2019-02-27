@@ -75,7 +75,7 @@ pipenv_init() {
 
   # create symlink for Pipfile
   if [[ ! "./Pipfile" -ef "ansible_${ansiblever}/Pipfile" ]]; then
-    rm "./Pipfile"
+    #rm "./Pipfile"
     ln -s "ansible_${ansiblever}/Pipfile"
   fi
 
@@ -89,7 +89,7 @@ pipenv_init() {
       cd ..
     fi
 
-    rm "./Pipfile.lock"
+    #rm "./Pipfile.lock"
     ln -s "ansible_${ansiblever}/Pipfile.lock"
   fi
 
