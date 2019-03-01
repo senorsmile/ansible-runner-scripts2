@@ -10,6 +10,7 @@ ansible = "==2.6.13"
 netaddr = "*"
 boto = "*"
 boto3 = "*"
+docker = "*"
 
 [requires]
 python_version = "2.7.15"
