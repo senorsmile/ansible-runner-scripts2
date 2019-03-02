@@ -135,6 +135,7 @@ run_ansible_playbook() {
   fi
 
   export ANSIBLE_CALLBACK_WHITELIST='timer,profile_tasks'
+  export ANSIBLE_STDOUT_CALLBACK='debug'
 
   echo "******** ----------------"
   echo "******** Ansible version "
