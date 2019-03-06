@@ -9,12 +9,13 @@ if [[ ${#INOPTS[@]} -eq 0 ]]; then
   INOPTS=("")
 fi
 
-site="${SITEFILE:-site.yml}"
+sitefile="${SITEFILE:-site.yml}"
 inventorydir="${INVENTORYDIR:-./inventory/}"
 #inventoryver="${INVENTORYVER:-master}"
 #inventoryrepo="${INVENTORYREPO:-/change/me}"
 vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault_senorsmile_personal.txt}"
 ansiblever="${ANSIBLEVER:-2.7}"
+mode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 
 save_dir() {
   ## save current directory
@@ -147,16 +148,34 @@ run_ansible_playbook() {
   echo "******** ------------"
   echo "******** Ansible run "
   echo "******** ------------"
-  opts=(
-    ansible-playbook      
-    -i "${inventorydir}"
-    --diff              
-    ${VAULTOPTS}        
-    "${site}"           
-    #--become            
-    ${INOPTS[@]}
-  )
-  pipenv run ${opts[@]}
+  if [[ $ANSIBLEMODE == 'PLAYBOOK' ]]; then
+      opts=(
+        ansible-playbook
+        -i "${inventorydir}"
+        --diff
+        ${VAULTOPTS}
+        "${sitefile}"
+        #--become
+        ${INOPTS[@]}
+      )
+      pipenv run ${opts[@]}
+  elif [[ $ANSIBLEMODE == 'ADHOC' ]]; then
+      opts=(
+        ansible
+        -i "${inventorydir}"
+        --diff
+        ${VAULTOPTS}
+        #--become
+        ${INOPTS[@]}
+      )
+      pipenv run  ${opts[@]}
+  else
+      echo "Invalived ANSIBLEMODE=${ANSIBLEMODE}"
+      echo "Valid options:"
+      echo "  PLAYBOOK"
+      echo "  ADHOC"
+      exit 1
+  fi
 }
 
 main() {
