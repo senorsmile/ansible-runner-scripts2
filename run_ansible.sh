@@ -15,7 +15,7 @@ inventorydir="${INVENTORYDIR:-./inventory/}"
 #inventoryrepo="${INVENTORYREPO:-/change/me}"
 vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault_senorsmile_personal.txt}"
 ansiblever="${ANSIBLEVER:-2.7}"
-mode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
+ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 
 save_dir() {
   ## save current directory
@@ -148,7 +148,7 @@ run_ansible_playbook() {
   echo "******** ------------"
   echo "******** Ansible run "
   echo "******** ------------"
-  if [[ $ANSIBLEMODE == 'PLAYBOOK' ]]; then
+  if [[ $ansiblemode == 'PLAYBOOK' ]]; then
       opts=(
         ansible-playbook
         -i "${inventorydir}"
@@ -159,7 +159,7 @@ run_ansible_playbook() {
         ${INOPTS[@]}
       )
       pipenv run ${opts[@]}
-  elif [[ $ANSIBLEMODE == 'ADHOC' ]]; then
+  elif [[ $ansiblemode == 'ADHOC' ]]; then
       opts=(
         ansible
         -i "${inventorydir}"
@@ -170,7 +170,7 @@ run_ansible_playbook() {
       )
       pipenv run  ${opts[@]}
   else
-      echo "Invalived ANSIBLEMODE=${ANSIBLEMODE}"
+      echo "Invalived ansiblemode=${ansiblemode}"
       echo "Valid options:"
       echo "  PLAYBOOK"
       echo "  ADHOC"
