@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "95b22cd8aa54c391157dbac65c5d8836ecfcf68348657a22e8551d0eea979179"
+            "sha256": "01015e2c6e63dd061204df6ddd56d210ca595f50ae8af68070251ea931609a06"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -18,10 +18,10 @@
     "default": {
         "ansible": {
             "hashes": [
-                "sha256:96fbddc5b6a394d2a3259b23847611a61e8d24c5aca6f4325a9aabca54817f05"
+                "sha256:412f130f4c5d1953ccd95f01b5a4675cbff4ba225762bafb74a2f3bb6c807827"
             ],
             "index": "pypi",
-            "version": "==2.6.13"
+            "version": "==2.6.14"
         },
         "asn1crypto": {
             "hashes": [
@@ -71,25 +71,25 @@
         },
         "boto3": {
             "hashes": [
-                "sha256:6fde6d4408d6a74a9572d88f38bf7c7eab4fa7b3599eaa5dc7fe9104f7937bb2",
-                "sha256:b088a7d1da939662c6e0255e41f08e6fb43a9c7adf734a445dc5057d0a55cdf3"
+                "sha256:06414c75d1f62af7d04fd652b38d1e4fd3cfd6b35bad978466af88e2aaecd00d",
+                "sha256:f3b77dff382374773d02411fa47ee408f4f503aeebd837fd9dc9ed8635bc5e8e"
             ],
             "index": "pypi",
-            "version": "==1.9.105"
+            "version": "==1.9.111"
         },
         "botocore": {
             "hashes": [
-                "sha256:2a0292d96b89657cba684be9574979abe37246a149b3591c4ff401271c446d7b",
-                "sha256:fca06f04c2e6f6268045645a7a3a9c13ce7d21405eb88d2465bebf2d8e336641"
+                "sha256:6af473c52d5e3e7ff82de5334e9fee96b2d5ec2df5d78bc00cd9937e2573a7a8",
+                "sha256:9f5123c7be704b17aeacae99b5842ab17bda1f799dd29134de8c70e0a50a45d7"
             ],
-            "version": "==1.12.105"
+            "version": "==1.12.111"
         },
         "certifi": {
             "hashes": [
-                "sha256:47f9c83ef4c0c621eaef743f133f09fa8a74a9b75f037e8624f83bd1b6626cb7",
-                "sha256:993f830721089fef441cdfeb4b2c8c9df86f0c63239f06bd025a76a7daddb033"
+                "sha256:59b7658e26ca9c7339e00f8f4636cdfe59d34fa37b9b04f6f9e9926b3cece1a5",
+                "sha256:b26104d6835d1f5e49452a26eb2ff87fe7090b89dfcaee5ea2212697e1e1d7ae"
             ],
-            "version": "==2018.11.29"
+            "version": "==2019.3.9"
         },
         "cffi": {
             "hashes": [
@@ -208,7 +208,7 @@
                 "sha256:64b28eec5e78e7510698f6d4da08800a5c575caa4a286c93d651c5d3ff7b6794",
                 "sha256:b146c751ea45cad6188dd6cf2d9b757f6f4f8d6ffb96a023e6f2e26eea02a72c"
             ],
-            "markers": "python_version < '3.3'",
+            "markers": "python_version < '3'",
             "version": "==1.0.22"
         },
         "jinja2": {
