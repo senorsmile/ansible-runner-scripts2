@@ -168,6 +168,13 @@ run_ansible_playbook() {
   echo "******** ------------"
   echo "******** Ansible run "
   echo "******** ------------"
+
+  # if using repo for central inventory,
+  # redefined inventorydir
+  if [[ "${inventoryrepo+DEFINED}" ]]; then
+    inventorydir="${inventorydir}/${inventoryrepo_name}"
+  fi
+
   if [[ $ansiblemode == 'PLAYBOOK' ]]; then
       opts=(
         ansible-playbook
