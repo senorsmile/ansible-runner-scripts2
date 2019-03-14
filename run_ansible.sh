@@ -11,11 +11,18 @@ fi
 
 sitefile="${SITEFILE:-site.yml}"
 inventorydir="${INVENTORYDIR:-./inventory/}"
-#inventoryver="${INVENTORYVER:-master}"
-#inventoryrepo="${INVENTORYREPO:-/change/me}"
 vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 ansiblever="${ANSIBLEVER:-2.7}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
+
+
+if [[ "${INVENTORYVER+DEFINED}" ]]; then
+  inventoryver="${INVENTORYVER}"
+fi
+if [[ "${INVENTORYREPO+DEFINED}" ]]; then
+  inventoryrepo="${INVENTORYREPO}"
+fi
+
 
 save_dir() {
   ## save current directory
