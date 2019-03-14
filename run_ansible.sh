@@ -13,7 +13,7 @@ sitefile="${SITEFILE:-site.yml}"
 inventorydir="${INVENTORYDIR:-./inventory/}"
 #inventoryver="${INVENTORYVER:-master}"
 #inventoryrepo="${INVENTORYREPO:-/change/me}"
-vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault_senorsmile_personal.txt}"
+vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 ansiblever="${ANSIBLEVER:-2.7}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 
