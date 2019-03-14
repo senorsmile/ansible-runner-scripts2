@@ -52,16 +52,29 @@ inventory_checkout() {
   # do nothing if inventoryrepo is not defined
   if [[ "${inventoryrepo+DEFINED}" ]]; then
 
+    inventoryrepo_name=$(
+      echo "${inventoryrepo}" | 
+      perl -lane 'print $1 if /.*\/([\w-]+)\.git/'
+    )
+
     if [[ ! -d "${inventorydir}" ]]; then
-      git clone "${inventoryrepo}"
+      mkdir "${inventorydir}"
     fi
 
+    if [[ ! -d "${inventorydir}/${inventoryrepo_name}/" ]]; then
+      save_dir
+      cd "${inventorydir}"
+      git clone "${inventoryrepo}"
+      return_dir
+    fi
     save_dir
-    cd "${inventorydir}"
+    cd "${inventorydir}/${inventoryrepo_name}"
     git checkout master
     git pull --rebase
-    git checkout "${inventoryver}"
-    git pull --rebase
+    if [[ ${inventoryver} != 'master' ]]; then
+      git checkout "${inventoryver}"
+      git pull --rebase
+    fi
     git submodule update --init --recursive
     return_dir
 
