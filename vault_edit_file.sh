@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Plaintext vault decryption key, not checked into SCM
-VAULT_PASSWORD_FILE="${VAULT_PASSWORD_FILE:-$HOME/.ssh/creds/ansible_vault.txt}"
+VAULTFILE="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 
 
 
@@ -19,6 +19,6 @@ if [[ $command == '' ]]; then
 fi
 
 
-VAULTOPTS="--vault-password-file=$VAULT_PASSWORD_FILE"
+VAULTOPTS="--vault-password-file=$VAULTFILE"
 
 pipenv run ansible-vault $command "${file}" $VAULTOPTS
