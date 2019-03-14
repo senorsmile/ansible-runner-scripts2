@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Plaintext vault decryption key, not checked into SCM
-VAULT_PASSWORD_FILE="$HOME/.ssh/creds/ansible_vault.txt"
+VAULT_PASSWORD_FILE="${VAULT_PASSWORD_FILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 
 
 
