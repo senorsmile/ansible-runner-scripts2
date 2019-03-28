@@ -173,8 +173,8 @@ run_ansible_playbook() {
   if [[ "${inventoryrepo+DEFINED}" ]]; then
     inventorydir="${inventorydir}/${inventoryrepo_name}"
   fi
-  pipenv run ansible localhost -i "${inventorydir}" -m ping >/dev/null & {
-    echo "*** Inventory Load Successful*"
+  pipenv run ansible localhost -i"${inventorydir}" --list-hosts >/dev/null & {
+    echo "*** Inventory Load Successful"
   }
   echo
 
