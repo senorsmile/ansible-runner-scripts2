@@ -165,15 +165,22 @@ run_ansible_playbook() {
   pipenv run ansible --version
   echo
 
-  echo "******** ------------"
-  echo "******** Ansible run "
-  echo "******** ------------"
-
+  echo "******** ---------------"
+  echo "******** Inventory Load "
+  echo "******** ---------------"
   # if using repo for central inventory,
   # redefined inventorydir
   if [[ "${inventoryrepo+DEFINED}" ]]; then
     inventorydir="${inventorydir}/${inventoryrepo_name}"
   fi
+  pipenv run ansible localhost -i "${inventorydir}" -m ping >/dev/null & {
+    echo "*** Inventory Load Successful*"
+  }
+  echo
+
+  echo "******** ------------"
+  echo "******** Ansible run "
+  echo "******** ------------"
 
   if [[ $ansiblemode == 'PLAYBOOK' ]]; then
       opts=(
