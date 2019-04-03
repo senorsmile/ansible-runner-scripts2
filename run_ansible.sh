@@ -11,19 +11,12 @@ fi
 
 sitefile="${SITEFILE:-site.yml}"
 inventorydir="${INVENTORYDIR:-./inventory/}"
-vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 ansiblever="${ANSIBLEVER:-2.7}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
 
-if [[ "${INVENTORYVER+DEFINED}" ]]; then
-  inventoryver="${INVENTORYVER}"
-fi
-if [[ "${INVENTORYREPO+DEFINED}" ]]; then
-  inventoryrepo="${INVENTORYREPO}"
-fi
 
 save_dir() {
   ## save current directory
@@ -50,6 +43,12 @@ symlink_src_dir() {
 }
 
 inventory_checkout() {
+  if [[ "${INVENTORYREPO+DEFINED}" ]]; then
+    inventoryrepo="${INVENTORYREPO}"
+  fi
+
+  inventoryver="${INVENTORYVER:-master}"
+
   # do nothing if inventoryrepo is not defined
   if [[ "${inventoryrepo+DEFINED}" ]]; then
 
@@ -161,12 +160,17 @@ run_ansible_playbook() {
   echo "******** ------------"
   pipenv_init
   echo
-  
+ 
+  echo "******** ----------------"
+  echo "******** Init vault file "
+  echo "******** ----------------"
+  vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
   if [[ $(check_vaultfile) == "TRUE" ]]; then
     VAULTOPTS="--vault-password-file=${vaultfile}"
   else
     VAULTOPTS=""
   fi
+  echo
 
   export ANSIBLE_CALLBACK_WHITELIST='timer,profile_tasks'
   #export ANSIBLE_STDOUT_CALLBACK='debug'
