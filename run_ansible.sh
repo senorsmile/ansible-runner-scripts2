@@ -14,6 +14,8 @@ inventorydir="${INVENTORYDIR:-./inventory/}"
 vaultfile="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 ansiblever="${ANSIBLEVER:-2.7}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
+extrainit="${EXTRAINIT:-_init_vars.sh}"
+
 
 
 if [[ "${INVENTORYVER+DEFINED}" ]]; then
@@ -22,7 +24,6 @@ fi
 if [[ "${INVENTORYREPO+DEFINED}" ]]; then
   inventoryrepo="${INVENTORYREPO}"
 fi
-
 
 save_dir() {
   ## save current directory
@@ -136,7 +137,19 @@ pipenv_init() {
   pipenv sync
 }
 
+load_extra_init() {
+  if [[ -f "${extrainit}" ]]; then
+    source "${extrainit}"
+  fi
+}
+
 run_ansible_playbook() {
+  echo "******** --------------------------"
+  echo "********  Load extra initialization"
+  echo "******** --------------------------"
+  load_extra_init
+  echo
+
   echo "******** -------------------"
   echo "******** Inventory Checkout "
   echo "******** -------------------"
