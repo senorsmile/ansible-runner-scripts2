@@ -2,7 +2,7 @@
 
 # Plaintext vault decryption key, not checked into SCM
 VAULTFILE="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
-
+extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
 command="$1"; shift
@@ -18,6 +18,9 @@ if [[ $command == '' ]]; then
   exit 1
 fi
 
+if [[ -f "${extrainit}" ]]; then
+  source "${extrainit}"
+fi
 
 VAULTOPTS="--vault-password-file=$VAULTFILE"
 
