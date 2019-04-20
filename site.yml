@@ -1,6 +1,6 @@
 ---
 - hosts: 
-    - localhosts
+    - localhost
   gather_facts: False
   become: False
   pre_tasks:
