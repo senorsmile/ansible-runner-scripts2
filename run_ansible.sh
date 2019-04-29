@@ -186,13 +186,20 @@ run_ansible_playbook() {
   echo "******** Inventory Load "
   echo "******** ---------------"
   # if using repo for central inventory,
-  # redefined inventorydir
+  # redefine inventorydir
   if [[ "${inventoryrepo+DEFINED}" ]]; then
     inventorydir="${inventorydir}/${inventoryrepo_name}"
   fi
-  pipenv run ansible localhost -i"${inventorydir}" --list-hosts >/dev/null & {
-    echo "*** Inventory Load Successful"
-  }
+
+  INVOUTPUT=$(pipenv run ansible localhost -i "${inventorydir}" --list-hosts 2>&1)
+  if [[ "${INVOUTPUT}" == *"No inventory was parsed"* ]]; then
+    echo "*** Inventory Load NOT Successful"
+  else
+    echo "*** Inventory Load NOT Successful"
+  fi
+  #pipenv run ansible localhost -i "${inventorydir}" --list-hosts >/dev/null && {
+  #  echo "*** Inventory Load Successful"
+  #}
   echo
 
   echo "******** ------------"
