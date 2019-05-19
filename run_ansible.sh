@@ -11,7 +11,7 @@ fi
 
 sitefile="${SITEFILE:-site.yml}"
 inventorydir="${INVENTORYDIR:-./inventory/}"
-ansiblever="${ANSIBLEVER:-2.7}"
+ansiblever="${ANSIBLEVER:-2.8}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
