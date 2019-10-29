@@ -10,7 +10,6 @@ if [[ ${#INOPTS[@]} -eq 0 ]]; then
 fi
 
 sitefile="${SITEFILE:-site.yml}"
-inventorydir="${INVENTORYDIR:-./inventory/}"
 ansiblever="${ANSIBLEVER:-2.8}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
@@ -148,6 +147,8 @@ run_ansible_playbook() {
   echo "******** --------------------------"
   load_extra_init
   echo
+
+  inventorydir="${INVENTORYDIR:-./inventory/}"
 
   echo "******** -------------------"
   echo "******** Inventory Checkout "
