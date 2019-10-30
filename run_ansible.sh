@@ -77,6 +77,7 @@ inventory_checkout() {
     git submodule update --init --recursive
     return_dir
 
+    
   fi
 }
 
@@ -119,35 +120,46 @@ pipenv_init() {
     exit
   fi
 
-  # err out if either file exists but is NOT a symbolic link
-  if [[ -f "./Pipfile" && ! -h "./Pipfile" ]] || [[ -f "./Pipfile.lock" && ! -h "./Pipfile.lock" ]]; then
-    echo "Pipfile and Pipfile.lock should be a symbolic link, but is not."
-    echo "Backup and remove that file so this script can manage it."
-    exit 1
-  fi
+  if [[ pipfile_symlink == 'ENABLED' ]]; then
+      # err out if either file exists but is NOT a symbolic link
+      if [[ -f "./Pipfile" && ! -h "./Pipfile" ]] || [[ -f "./Pipfile.lock" && ! -h "./Pipfile.lock" ]]; then
+        echo "Pipfile and Pipfile.lock should be a symbolic link, but is not."
+        echo "Backup and remove that file so this script can manage it."
+        exit 1
+      fi
 
-  # get real dir (in case symlink)
-  local realdir=$(symlink_src_dir)
+      # get real dir (in case symlink)
+      local realdir=$(symlink_src_dir)
 
-  # create symlink for Pipfile
-  if [[ ! "./Pipfile" -ef "${realdir}/ansible_${ansiblever}/Pipfile" ]]; then
-    #rm "./Pipfile"
-    ln -s "${realdir}/ansible_${ansiblever}/Pipfile"
-  fi
+      # create symlink for Pipfile
+      if [[ ! "./Pipfile" -ef "${realdir}/ansible_${ansiblever}/Pipfile" ]]; then
+        #rm "./Pipfile"
+        ln -s "${realdir}/ansible_${ansiblever}/Pipfile"
+      fi
 
-  # create symlink for Pipfile.lock (and pipenv install if not there)
-  if [[ ! "./Pipfile.lock" -ef "${realdir}/ansible_${ansiblever}/Pipfile.lock" ]]; then
+      # create symlink for Pipfile.lock (and pipenv install if not there)
+      if [[ ! "./Pipfile.lock" -ef "${realdir}/ansible_${ansiblever}/Pipfile.lock" ]]; then
 
-    if [[ ! -s "${realdir}/ansible_${ansiblever}/Pipfile.lock" ]]; then
-      echo "Pipfile.lock does not exist.  Installing..."
-      save_dir
-      cd "${realdir}/ansible_${ansiblever}"
-      pipenv install
-      return_dir
-    fi
+        if [[ ! -s "${realdir}/ansible_${ansiblever}/Pipfile.lock" ]]; then
+          echo "Pipfile.lock does not exist.  Installing..."
+          save_dir
+          cd "${realdir}/ansible_${ansiblever}"
+          pipenv install
+          return_dir
+        fi
 
-    #rm "./Pipfile.lock"
-    ln -s "${realdir}/ansible_${ansiblever}/Pipfile.lock"
+        #rm "./Pipfile.lock"
+        ln -s "${realdir}/ansible_${ansiblever}/Pipfile.lock"
+      fi
+  else # not symlinking provided Pipefile*
+      if [[ ! -f "./Pipfile" ]]; then
+        echo "Auto Symlinking to the provided Pipfile's has been disabled."
+        echo "However, no Pipfile is present in the current directory."
+        echo "Exiting."
+        exit 1
+      else
+        pipenv install
+      fi
   fi
 
 
@@ -168,6 +180,7 @@ run_ansible_playbook() {
   echo
 
   inventorydir="${INVENTORYDIR:-./inventory/}"
+  pipfile_symlink="${PIPFILE_SYMLINK:-ENABLED}"
 
   echo "******** -------------------"
   echo "******** Inventory Checkout "
