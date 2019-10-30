@@ -157,7 +157,8 @@ pipenv_init() {
         echo "However, no Pipfile is present in the current directory."
         echo "Exiting."
         exit 1
-      else
+      fi
+      if [[ ! -f "./Pipfile.lock" ]]; then
         pipenv install
       fi
   fi
