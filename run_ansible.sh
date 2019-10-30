@@ -97,8 +97,27 @@ check_installed() {
   fi 
 }
 
+check_installed_no_exit() {
+  if which "$1" &> /dev/null; then
+    echo "OK"
+  else
+    echo "MISSING"
+  fi 
+}
+
 pipenv_init() {
-  check_installed pipenv
+  check_installed python2
+  pipenv_installed=$(check_installed_no_exit pipenv)
+  if [[ $pipenv_installed == 'MISSING' ]]; then
+    if [[ -e /tmp/get-pipenv.py ]]; then
+      echo "Removing old get-pipenv.py version"
+      rm /tmp/get-pipenv.py
+    fi
+
+    wget https://raw.githubusercontent.com/kennethreitz/pipenv/master/get-pipenv.py --directory /tmp
+    sudo python /tmp/get-pipenv.py
+    exit
+  fi
 
   # err out if either file exists but is NOT a symbolic link
   if [[ -f "./Pipfile" && ! -h "./Pipfile" ]] || [[ -f "./Pipfile.lock" && ! -h "./Pipfile.lock" ]]; then
