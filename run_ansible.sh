@@ -10,7 +10,7 @@ if [[ ${#INOPTS[@]} -eq 0 ]]; then
 fi
 
 sitefile="${SITEFILE:-site.yml}"
-ansiblever="${ANSIBLEVER:-2.8}"
+ansiblever="${ANSIBLEVER:-2.9}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
