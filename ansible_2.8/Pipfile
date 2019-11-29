@@ -6,12 +6,16 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-ansible = "==2.8.4"
+ansible = "==2.8.6"
 netaddr = "*"
-boto = "*"
-boto3 = "*"
-docker = "*"
-dnspython = "*"
+#boto = "*"
+#boto3 = "*"
+#botocore = "*"
+#docker = "*"
+#dnspython = "*"
+#openshift = "*"
+#kubernetes-validate = "==1.13.0"
+#PyYAML = "*"
 
 [requires]
-python_version = "2.7.15"
+python_version = "3.8"
