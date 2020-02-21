@@ -115,9 +115,34 @@ pipenv_init() {
       rm /tmp/get-pipenv.py
     fi
 
-    wget https://raw.githubusercontent.com/kennethreitz/pipenv/master/get-pipenv.py --directory /tmp
-    sudo python /tmp/get-pipenv.py
-    exit
+    case "$(uname -s)" in
+
+      Darwin)
+        echo 'Mac OS X'
+        brew install pipenv
+        ;;
+
+      Linux)
+        echo 'Linux'
+        if [ "$(which apt)" != "" ]; then
+          apt update
+          apt install -y python3-pip
+          pip3 install pipenv || exit 1
+        elif [ "$(which dnf)" != "" ]; then
+          dnf install -y pipenv
+        fi
+        ;;
+
+      CYGWIN*|MINGW32*|MSYS*|MINGW*)
+        echo 'MS Windows'
+        ;;
+
+      *)
+        echo 'Other OS' 
+        echo "Could not detect OS, failing out.."
+        exit 1
+        ;;
+    esac
   fi
 
   if [[ pipfile_symlink == 'ENABLED' ]]; then
