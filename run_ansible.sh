@@ -116,7 +116,6 @@ pipenv_init() {
     fi
 
     case "$(uname -s)" in
-
       Darwin)
         echo 'Mac OS X'
         brew install pipenv
@@ -131,10 +130,6 @@ pipenv_init() {
         elif [ "$(which dnf)" != "" ]; then
           dnf install -y pipenv
         fi
-        ;;
-
-      CYGWIN*|MINGW32*|MSYS*|MINGW*)
-        echo 'MS Windows'
         ;;
 
       *)
