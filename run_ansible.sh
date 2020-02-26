@@ -123,20 +123,23 @@ pipenv_init() {
 
       Linux)
         echo 'Linux'
-        if [ "$(which apt)" != "" ]; then
-          apt update
-          apt install -y python3-pip
+        if [[ "$(which apt)" != "" ]]; then
+          sudo apt update
+          sudo apt install -y python3-pip
           pip3 install pipenv --user || exit 1
           echo '------ enable pip --user installations to be accesible'
           "echo -en '\\n[[ -d $HOME/.local/bin ]] && {\\n  PATH=\"$HOME/.local/bin:$PATH\"\\n}' >> $HOME/.bashrc"
-        elif [ "$(which dnf)" != "" ]; then
+        elif [[ "$(which dnf)" != "" ]]; then
           dnf install -y pipenv
+        else
+          echo 'Failure.  pipenv and/or pip3 not installed but this script cannot detect how to install.'
+          exit 1
         fi
         ;;
 
       *)
         echo 'Other OS' 
-        echo "Could not detect OS, failing out.."
+        echo 'Could not detect OS, failing out..'
         exit 1
         ;;
     esac
