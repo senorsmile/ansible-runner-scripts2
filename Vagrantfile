@@ -139,6 +139,7 @@ HERE
     fi
 
     if ! sudo -H -u vagrant bash -i -c 'pyenv versions | grep 3.8.2'; then
+      echo "*-*-*-* Installing python 3.8 using pyenv"
       sudo -H -u vagrant bash -i -c 'pyenv install 3.8.2'
     fi
   }
