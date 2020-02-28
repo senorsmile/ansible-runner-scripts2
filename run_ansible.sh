@@ -134,7 +134,7 @@ pipenv_init() {
           pip3 install pipenv --user || exit 1
           echo '------ enable pip --user installations to be accesible'
           if [[ -e "$HOME/.bashrc" ]]; then
-              echo -en '\\n[[ -d $HOME/.local/bin ]] && {\\n  PATH=\"$HOME/.local/bin:$PATH\"\\n}' >> $HOME/.bashrc
+              echo -en '\n[[ -d $HOME/.local/bin ]] && {\n  PATH="$HOME/.local/bin:$PATH"\n}' >> $HOME/.bashrc
               source "$HOME/.bashrc"
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
