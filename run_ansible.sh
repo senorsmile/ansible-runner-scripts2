@@ -110,6 +110,7 @@ pipenv_init() {
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
+    echo "--- Pipenv not found.  Installing locally"
     if [[ -e /tmp/get-pipenv.py ]]; then
       echo "Removing old get-pipenv.py version"
       rm /tmp/get-pipenv.py
