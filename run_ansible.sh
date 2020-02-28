@@ -134,7 +134,6 @@ pipenv_init() {
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
-          source $HOME/.bashrc
         elif [[ "$(which dnf)" != "" ]]; then
           dnf install -y pipenv
         else
