@@ -125,6 +125,21 @@ HERE
     fi
   }
 
+  install_pyenv() {
+    # install pyenv deps
+    sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+
+    whoami
+    if ! sudo -H -u vagrant bash -i -c 'pyenv --version'; then
+      curl https://pyenv.run | bash
+      echo -en '\nexport PATH=\"/home/vagrant/.pyenv/bin:$PATH\"\neval \"$(pyenv init -)\"\neval \"$(pyenv virtualenv-init -)\"' >> $HOME/.bashrc
+    fi
+
+    if ! sudo -H -u vagrant bash -i -c 'pyenv versions | grep 3.8.2'; then
+      sudo -H -u vagrant bash -i -c 'pyenv install 3.8.2'
+    fi
+  }
+
   test_runner() {
     cd "$HOME/ansible-runner-scripts2/"
     git checkout fix-pipenv-install
@@ -135,12 +150,12 @@ HERE
       ln -s ansible_2.9/Pipfile
     fi
 
-    ./run_ansible.sh
+    sudo -H -u vagrant bash -i -c './run_ansible.sh'
   }
-
   run() {
     #install_ansible
     apt_install git
+    install_pyenv
     git_checkout_runner
     test_runner
   }
