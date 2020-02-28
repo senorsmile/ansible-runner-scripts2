@@ -149,9 +149,14 @@ pipenv_init() {
           echo "---------------------------------------------"
           sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install python3-pip
 
+          echo "---------------------------------------------"
+          echo "--- pip install pipenv --user"
+          echo "---------------------------------------------"
           pip3 install pipenv --user || exit 1
 
+          echo "---------------------------------------------"
           echo '------ enable pip --user installations to be accesible'
+          echo "---------------------------------------------"
           if [[ -e "$HOME/.bashrc" ]]; then
              
               do_lines_exist=$(perl -e '
