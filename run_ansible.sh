@@ -142,6 +142,7 @@ pipenv_init() {
           echo "---------------------------------------------"
           echo "--- install python3-pip"
           echo "---------------------------------------------"
+          echo 'libssl1.1 libraries/restart-without-asking boolean true' | sudo debconf-set-selections
           sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install python3-pip
 
           echo "---------------------------------------------"
