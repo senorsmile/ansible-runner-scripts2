@@ -107,7 +107,7 @@ check_installed_no_exit() {
 }
 
 pipenv_init() {
-  check_installed python2
+  check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
     if [[ -e /tmp/get-pipenv.py ]]; then
