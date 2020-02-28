@@ -173,17 +173,20 @@ pipenv_init() {
 
               if [[ ! $do_lines_exist == "FOUND" ]]; then
                   echo -en '\n[[ -d $HOME/.local/bin ]] && {\n  PATH="$HOME/.local/bin:$PATH"\n}' >> $HOME/.bashrc
-                  source "$HOME/.bashrc"
               fi
 
+              source "$HOME/.bashrc"
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
+
         elif [[ "$(which dnf)" != "" ]]; then
           dnf install -y pipenv
+
         else
           echo 'Failure.  pipenv and/or pip3 not installed but this script cannot detect how to install.'
           exit 1
+
         fi
         ;;
 
