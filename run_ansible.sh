@@ -128,7 +128,12 @@ pipenv_init() {
           sudo apt install -y python3-pip
           pip3 install pipenv --user || exit 1
           echo '------ enable pip --user installations to be accesible'
-          echo -en '\\n[[ -d $HOME/.local/bin ]] && {\\n  PATH=\"$HOME/.local/bin:$PATH\"\\n}' >> $HOME/.bashrc
+          if [[ -e "$HOME/.bashrc" ]]; then
+              echo -en '\\n[[ -d $HOME/.local/bin ]] && {\\n  PATH=\"$HOME/.local/bin:$PATH\"\\n}' >> $HOME/.bashrc
+              source "$HOME/.bashrc"
+          else
+              echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
+          fi
           source $HOME/.bashrc
         elif [[ "$(which dnf)" != "" ]]; then
           dnf install -y pipenv
