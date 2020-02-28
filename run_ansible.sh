@@ -129,6 +129,7 @@ pipenv_init() {
           pip3 install pipenv --user || exit 1
           echo '------ enable pip --user installations to be accesible'
           echo -en '\\n[[ -d $HOME/.local/bin ]] && {\\n  PATH=\"$HOME/.local/bin:$PATH\"\\n}' >> $HOME/.bashrc
+          source $HOME/.bashrc
         elif [[ "$(which dnf)" != "" ]]; then
           dnf install -y pipenv
         else
