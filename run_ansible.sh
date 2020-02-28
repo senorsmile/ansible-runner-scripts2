@@ -117,7 +117,9 @@ pipenv_init() {
     echo "------ Pipenv not found.  Installing locally"
     echo "---------------------------------------------"
     if [[ -e /tmp/get-pipenv.py ]]; then
+      echo "---------------------------------------------"
       echo "------ Removing old get-pipenv.py version"
+      echo "---------------------------------------------"
       rm /tmp/get-pipenv.py
     fi
 
@@ -130,9 +132,17 @@ pipenv_init() {
       Linux)
         echo 'Linux'
         if [[ "$(which apt)" != "" ]]; then
-          export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get -o DPkg::Options::=--force-confdef -y update
-          sudo apt-get -o DPkg::Options::=--force-confdef install -y python3-pip
+          export DEBIAN_FRONTEND=noninteractive 
+          export UCF_FORCE_CONFOLD=1 
+          echo "---------------------------------------------"
+          echo "--- update apt"
+          echo "---------------------------------------------"
+          sudo apt-get update
+          echo "---------------------------------------------"
+          echo "--- install python3-pip"
+          echo "---------------------------------------------"
+          sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install python3-pip
+
           pip3 install pipenv --user || exit 1
 
           echo '------ enable pip --user installations to be accesible'
