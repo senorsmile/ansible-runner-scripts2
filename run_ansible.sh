@@ -15,6 +15,9 @@ ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
+if [[ -e "$HOME/.bashrc" ]]; then
+    source "$HOME/.bashrc"
+fi
 
 
 save_dir() {
@@ -125,6 +128,7 @@ pipenv_init() {
       Linux)
         echo 'Linux'
         if [[ "$(which apt)" != "" ]]; then
+          export DEBIAN_FRONTEND=noninteractive
           sudo apt update
           sudo apt install -y python3-pip
           pip3 install pipenv --user || exit 1
