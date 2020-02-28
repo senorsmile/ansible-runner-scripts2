@@ -117,7 +117,7 @@ pipenv_init() {
     echo "------ Pipenv not found.  Installing locally"
     echo "---------------------------------------------"
     if [[ -e /tmp/get-pipenv.py ]]; then
-      echo "Removing old get-pipenv.py version"
+      echo "------ Removing old get-pipenv.py version"
       rm /tmp/get-pipenv.py
     fi
 
