@@ -19,6 +19,9 @@ $bootstrap = <<-SCRIPT
   set -euo pipefail # strict mode
   #set -x
 
+
+  export DEBIAN_FRONTEND=noninteractive
+
   debug_echo() {
     echo "*********************************"
     echo "TASK: $@"
@@ -114,13 +117,35 @@ HERE
     debug_echo "Done installing ansible"
   }
 
-
-
-  run() {
-    install_ansible
+  git_checkout_runner() {
+    if [[ ! -d "$HOME/ansible-runner-scripts2" ]]; then
+      echo "------ Checking out ansible-runner-scripts2 repo"
+      cd "$HOME"
+      git clone 'https://github.com/senorsmile/ansible-runner-scripts2.git'
+    fi
   }
 
-  #time run
+  test_runner() {
+    cd "$HOME/ansible-runner-scripts2/"
+    git checkout fix-pipenv-install
+    git pull --rebase
+    git submodule update --init --recursive
+
+    if [[ ! -L "$HOME/ansible-runner-scripts2/Pipfile" ]]; then
+      ln -s ansible_2.9/Pipfile
+    fi
+
+    ./run_ansible.sh
+  }
+
+  run() {
+    #install_ansible
+    apt_install git
+    git_checkout_runner
+    test_runner
+  }
+
+  time run
 
 SCRIPT
 
@@ -159,7 +184,7 @@ Vagrant.configure("2") do |config|
       end
     end
 
-    config.vm.provision "shell", inline: $bootstrap
+    config.vm.provision "shell", inline: $bootstrap, privileged: false
 
 
     ##if node[:hostname] == 'jenkins-master'

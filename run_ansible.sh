@@ -131,8 +131,8 @@ pipenv_init() {
         echo 'Linux'
         if [[ "$(which apt)" != "" ]]; then
           export DEBIAN_FRONTEND=noninteractive
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
+          sudo apt-get -o DPkg::Options::=--force-confdef -y update
+          sudo apt-get -o DPkg::Options::=--force-confdef install -y python3-pip
           pip3 install pipenv --user || exit 1
 
           echo '------ enable pip --user installations to be accesible'
