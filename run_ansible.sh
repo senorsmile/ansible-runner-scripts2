@@ -140,11 +140,6 @@ pipenv_init() {
           sudo apt-get update
 
           echo "---------------------------------------------"
-          echo "--- install libssl (pip dep)"
-          echo "---------------------------------------------"
-          sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install libssl1.1
-
-          echo "---------------------------------------------"
           echo "--- install python3-pip"
           echo "---------------------------------------------"
           sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install python3-pip
