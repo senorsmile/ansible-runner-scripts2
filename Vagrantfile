@@ -156,6 +156,7 @@ HERE
 
     sudo -H -u vagrant bash -i -c './run_ansible.sh'
   }
+
   run() {
     #install_ansible
     apt_install git
