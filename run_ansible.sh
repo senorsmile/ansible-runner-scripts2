@@ -341,7 +341,7 @@ run_ansible_playbook() {
       )
       pipenv run  ${opts[@]}
   else
-      echo "Invalived ansiblemode=${ansiblemode}"
+      echo "Invalid ansiblemode=${ansiblemode}"
       echo "Valid options:"
       echo "  PLAYBOOK"
       echo "  ADHOC"
