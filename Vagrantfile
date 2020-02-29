@@ -149,7 +149,7 @@ HERE
 
   test_runner() {
     cd "$HOME/ansible-runner-scripts2/"
-    git checkout fix-pipenv-install
+    git checkout fix-pipenv-install # TODO: change this to master after troubleshooting done
     git pull --rebase
     git submodule update --init --recursive
 
