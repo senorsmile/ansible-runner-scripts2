@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 set -euo pipefail # bash strict mode
-
+bash -x
 
 INOPTS=("$@")
 
@@ -272,6 +272,19 @@ run_ansible_playbook() {
   echo "******** Init pipenv "
   echo "******** ------------"
   pipenv_init
+
+  ################################
+  ### temp troubleshooting
+
+  check_installed python3
+  pipenv_installed=$(check_installed_no_exit pipenv)
+  if [[ $pipenv_installed == 'MISSING' ]]; then
+    echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
+    exit 1
+  fi
+
+  ### temp troubleshooting
+  ################################
   echo
  
   echo "******** ----------------"
