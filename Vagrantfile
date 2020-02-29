@@ -157,7 +157,7 @@ HERE
       ln -s ansible_2.9/Pipfile
     fi
 
-    sudo -H -u vagrant bash -i -c './run_ansible.sh'
+    sudo -H -u vagrant bash -i -c 'bash -x ./run_ansible.sh'
   }
 
   run() {

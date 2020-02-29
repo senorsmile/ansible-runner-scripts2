@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
 set -euo pipefail # bash strict mode
-bash -x
 
 INOPTS=("$@")
 
@@ -146,6 +145,27 @@ pipenv_init() {
           sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install python3-pip
 
           echo "---------------------------------------------"
+          echo "--- pip install pipenv --user"
+          echo "---------------------------------------------"
+
+  ################################
+  ### temp troubleshooting
+  [[ -d $HOME/.local/bin ]] && {
+    PATH="$HOME/.local/bin:$PATH"
+  }
+
+  pipenv_installed=$(check_installed_no_exit pipenv)
+  if [[ $pipenv_installed == 'MISSING' ]]; then
+    echo $PATH
+    echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
+    exit 1
+  fi
+
+  ### temp troubleshooting
+  ################################
+          pip3 install pipenv --user || exit 1
+
+          echo "---------------------------------------------"
           echo '------ enable pip --user installations to be accesible'
           echo "---------------------------------------------"
           if [[ -e "$HOME/.bashrc" ]]; then
@@ -175,24 +195,6 @@ pipenv_init() {
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
-
-          echo "---------------------------------------------"
-          echo "--- pip install pipenv --user"
-          echo "---------------------------------------------"
-
-  ################################
-  ### temp troubleshooting
-
-  check_installed pipenv
-  pipenv_installed=$(check_installed_no_exit pipenv)
-  if [[ $pipenv_installed == 'MISSING' ]]; then
-    echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
-    exit 1
-  fi
-
-  ### temp troubleshooting
-  ################################
-          pip3 install pipenv --user || exit 1
 
 
 
