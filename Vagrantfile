@@ -131,6 +131,9 @@ HERE
     if ! sudo -H -u vagrant bash -i -c 'pyenv --version'; then
       echo "*-*-*-* install pyenv deps"
       sudo apt-get update
+      echo 'libssl1.1 libraries/restart-without-asking boolean true' | sudo debconf-set-selections
+      sudo debconf-show libssl1.1
+      exit 1
       sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
 
       echo "*-*-*-* Install pyenv"
