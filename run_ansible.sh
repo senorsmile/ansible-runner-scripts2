@@ -161,6 +161,7 @@ pipenv_init() {
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
     echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
+    echo "TROUBLESHOOTING - exiting early"
     exit 1
   fi
 
