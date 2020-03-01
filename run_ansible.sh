@@ -150,23 +150,23 @@ pipenv_init() {
 
           pip3 install pipenv --user || exit 1
 
-  ################################
-  ### temp troubleshooting
-  echo "Home is $HOME"
-  [[ -d $HOME/.local/bin ]] && {
-    PATH="$HOME/.local/bin:$PATH"
-    echo "Path is $PATH"
-  }
+  #################################
+  #### temp troubleshooting
+  #echo "Home is $HOME"
+  #[[ -d $HOME/.local/bin ]] && {
+  #  PATH="$HOME/.local/bin:$PATH"
+  #  echo "Path is $PATH"
+  #}
 
-  pipenv_installed=$(check_installed_no_exit pipenv)
-  if [[ $pipenv_installed == 'MISSING' ]]; then
-    echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
-    echo "TROUBLESHOOTING - exiting early"
-    exit 1
-  fi
+  #pipenv_installed=$(check_installed_no_exit pipenv)
+  #if [[ $pipenv_installed == 'MISSING' ]]; then
+  #  echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
+  #  echo "TROUBLESHOOTING - exiting early"
+  #  exit 1
+  #fi
 
-  ### temp troubleshooting
-  ################################
+  #### temp troubleshooting
+  #################################
           echo "---------------------------------------------"
           echo '------ enable pip --user installations to be accesible'
           echo "---------------------------------------------"
