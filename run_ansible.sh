@@ -153,11 +153,11 @@ pipenv_init() {
   echo "Home is $HOME"
   [[ -d $HOME/.local/bin ]] && {
     PATH="$HOME/.local/bin:$PATH"
+    echo "Path is $PATH"
   }
 
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
-    echo $PATH
     echo "TROUBLESHOOTING - pipenv should be installed, but is not in the path!"
     exit 1
   fi
