@@ -14,6 +14,7 @@ ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
+# TODO: remove this?
 if [[ -e "$HOME/.bashrc" ]]; then
     source "$HOME/.bashrc"
 fi
@@ -150,13 +151,14 @@ pipenv_init() {
 
           pip3 install pipenv --user || exit 1
 
+          [[ -d $HOME/.local/bin ]] && {
+            PATH="$HOME/.local/bin:$PATH"
+            echo "Path is $PATH"
+          }
+
   #################################
   #### temp troubleshooting
   #echo "Home is $HOME"
-  #[[ -d $HOME/.local/bin ]] && {
-  #  PATH="$HOME/.local/bin:$PATH"
-  #  echo "Path is $PATH"
-  #}
 
   #pipenv_installed=$(check_installed_no_exit pipenv)
   #if [[ $pipenv_installed == 'MISSING' ]]; then
@@ -167,6 +169,7 @@ pipenv_init() {
 
   #### temp troubleshooting
   #################################
+
           echo "---------------------------------------------"
           echo '------ enable pip --user installations to be accesible'
           echo "---------------------------------------------"
@@ -193,7 +196,7 @@ pipenv_init() {
                   echo -en '\n[[ -d $HOME/.local/bin ]] && {\n  PATH="$HOME/.local/bin:$PATH"\n}' >> $HOME/.bashrc
               fi
 
-              source "$HOME/.bashrc"
+              source "$HOME/.bashrc" # TODO: remove this? 
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
