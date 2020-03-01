@@ -148,6 +148,8 @@ pipenv_init() {
           echo "--- pip install pipenv --user"
           echo "---------------------------------------------"
 
+          pip3 install pipenv --user || exit 1
+
   ################################
   ### temp troubleshooting
   echo "Home is $HOME"
@@ -164,8 +166,6 @@ pipenv_init() {
 
   ### temp troubleshooting
   ################################
-          pip3 install pipenv --user || exit 1
-
           echo "---------------------------------------------"
           echo '------ enable pip --user installations to be accesible'
           echo "---------------------------------------------"
