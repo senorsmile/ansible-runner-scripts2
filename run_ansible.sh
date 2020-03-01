@@ -150,6 +150,7 @@ pipenv_init() {
 
   ################################
   ### temp troubleshooting
+  echo "Home is $HOME"
   [[ -d $HOME/.local/bin ]] && {
     PATH="$HOME/.local/bin:$PATH"
   }
