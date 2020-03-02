@@ -15,9 +15,9 @@ extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
 # TODO: remove this?
-if [[ -e "$HOME/.bashrc" ]]; then
-    source "$HOME/.bashrc"
-fi
+#if [[ -e "$HOME/.bashrc" ]]; then
+#    source "$HOME/.bashrc"
+#fi
 
 
 save_dir() {
@@ -184,7 +184,7 @@ pipenv_init() {
                   echo -en '\n[[ -d $HOME/.local/bin ]] && {\n  PATH="$HOME/.local/bin:$PATH"\n}' >> $HOME/.bashrc
               fi
 
-              source "$HOME/.bashrc" # TODO: remove this? 
+              #source "$HOME/.bashrc" # TODO: remove this? 
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
