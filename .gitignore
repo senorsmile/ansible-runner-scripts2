@@ -8,3 +8,6 @@
 
 # ansible
 *.retry
+
+# vagrant
+.vagrant/

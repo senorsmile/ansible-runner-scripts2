@@ -2,7 +2,6 @@
 
 set -euo pipefail # bash strict mode
 
-
 INOPTS=("$@")
 
 if [[ ${#INOPTS[@]} -eq 0 ]]; then
@@ -15,6 +14,10 @@ ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
+# TODO: remove this?
+if [[ -e "$HOME/.bashrc" ]]; then
+    source "$HOME/.bashrc"
+fi
 
 
 save_dir() {
@@ -107,11 +110,16 @@ check_installed_no_exit() {
 }
 
 pipenv_init() {
-  check_installed python2
+  check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
+    echo "---------------------------------------------"
+    echo "------ Pipenv not found.  Installing locally"
+    echo "---------------------------------------------"
     if [[ -e /tmp/get-pipenv.py ]]; then
-      echo "Removing old get-pipenv.py version"
+      echo "---------------------------------------------"
+      echo "------ Removing old get-pipenv.py version"
+      echo "---------------------------------------------"
       rm /tmp/get-pipenv.py
     fi
 
@@ -124,21 +132,72 @@ pipenv_init() {
       Linux)
         echo 'Linux'
         if [[ "$(which apt)" != "" ]]; then
-          sudo apt update
-          sudo apt install -y python3-pip
+          export DEBIAN_FRONTEND=noninteractive 
+          export UCF_FORCE_CONFOLD=1 
+          echo "---------------------------------------------"
+          echo "--- update apt"
+          echo "---------------------------------------------"
+          sudo apt-get update
+
+          echo "---------------------------------------------"
+          echo "--- install python3-pip"
+          echo "---------------------------------------------"
+          echo 'libssl1.1 libraries/restart-without-asking boolean true' | sudo debconf-set-selections
+          sudo apt-get -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" -qq -y install python3-pip
+
+          echo "---------------------------------------------"
+          echo "--- pip install pipenv --user"
+          echo "---------------------------------------------"
+
           pip3 install pipenv --user || exit 1
+
+          # load --user install python package path manually
+          # since some non-interactive envs will NOT load bashrc
+          [[ -d $HOME/.local/bin ]] && {
+            PATH="$HOME/.local/bin:$PATH"
+            echo "Path is $PATH"
+          }
+
+          echo "---------------------------------------------"
           echo '------ enable pip --user installations to be accesible'
+          echo "---------------------------------------------"
           if [[ -e "$HOME/.bashrc" ]]; then
-              echo -en '\\n[[ -d $HOME/.local/bin ]] && {\\n  PATH=\"$HOME/.local/bin:$PATH\"\\n}' >> $HOME/.bashrc
-              source "$HOME/.bashrc"
+             
+              do_lines_exist=$(perl -e '
+                  BEGIN { $found=0; }
+
+                  my $contents = do {local $/; <>};
+
+                  while ($contents =~ m|\[\[ -d \$HOME/.local/bin \]\] && \{\n  PATH="\$HOME/.local/bin:\$PATH"\n\}|sg) {
+
+                      $found=1;
+                  }
+
+                  END {
+                      if ($found) {
+                          print "FOUND\n"; 
+                      }
+                  }
+              ' "$HOME/.bashrc")
+
+              if [[ ! $do_lines_exist == "FOUND" ]]; then
+                  echo -en '\n[[ -d $HOME/.local/bin ]] && {\n  PATH="$HOME/.local/bin:$PATH"\n}' >> $HOME/.bashrc
+              fi
+
+              source "$HOME/.bashrc" # TODO: remove this? 
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
+
+
+
         elif [[ "$(which dnf)" != "" ]]; then
           dnf install -y pipenv
+
         else
           echo 'Failure.  pipenv and/or pip3 not installed but this script cannot detect how to install.'
           exit 1
+
         fi
         ;;
 
@@ -292,7 +351,7 @@ run_ansible_playbook() {
       )
       pipenv run  ${opts[@]}
   else
-      echo "Invalived ansiblemode=${ansiblemode}"
+      echo "Invalid ansiblemode=${ansiblemode}"
       echo "Valid options:"
       echo "  PLAYBOOK"
       echo "  ADHOC"
