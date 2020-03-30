@@ -55,7 +55,7 @@ inventory_checkout() {
   if [[ "${inventoryrepo+DEFINED}" ]]; then
 
     inventoryrepo_name=$(
-      echo "${inventoryrepo}" | 
+      echo "${inventoryrepo}" |
       perl -lane 'print $1 if /.*\/([\w-]+)\.git/'
     )
 
@@ -80,7 +80,7 @@ inventory_checkout() {
     git submodule update --init --recursive
     return_dir
 
-    
+
   fi
 }
 
@@ -98,7 +98,7 @@ check_installed() {
   else
     echo "$1 is not installed.  Exiting..."
     exit 1
-  fi 
+  fi
 }
 
 check_installed_no_exit() {
@@ -106,7 +106,7 @@ check_installed_no_exit() {
     echo "OK"
   else
     echo "MISSING"
-  fi 
+  fi
 }
 
 pipenv_init() {
@@ -132,8 +132,8 @@ pipenv_init() {
       Linux)
         echo 'Linux'
         if [[ "$(which apt)" != "" ]]; then
-          export DEBIAN_FRONTEND=noninteractive 
-          export UCF_FORCE_CONFOLD=1 
+          export DEBIAN_FRONTEND=noninteractive
+          export UCF_FORCE_CONFOLD=1
           echo "---------------------------------------------"
           echo "--- update apt"
           echo "---------------------------------------------"
@@ -162,7 +162,7 @@ pipenv_init() {
           echo '------ enable pip --user installations to be accesible'
           echo "---------------------------------------------"
           if [[ -e "$HOME/.bashrc" ]]; then
-             
+
               do_lines_exist=$(perl -e '
                   BEGIN { $found=0; }
 
@@ -175,7 +175,7 @@ pipenv_init() {
 
                   END {
                       if ($found) {
-                          print "FOUND\n"; 
+                          print "FOUND\n";
                       }
                   }
               ' "$HOME/.bashrc")
@@ -184,7 +184,7 @@ pipenv_init() {
                   echo -en '\n[[ -d $HOME/.local/bin ]] && {\n  PATH="$HOME/.local/bin:$PATH"\n}' >> $HOME/.bashrc
               fi
 
-              #source "$HOME/.bashrc" # TODO: remove this? 
+              #source "$HOME/.bashrc" # TODO: remove this?
           else
               echo ".bashrc not found.  Pipenv (and other user installed pip apps) may not work."
           fi
@@ -202,7 +202,7 @@ pipenv_init() {
         ;;
 
       *)
-        echo 'Other OS' 
+        echo 'Other OS'
         echo 'Could not detect OS, failing out..'
         exit 1
         ;;
@@ -283,7 +283,7 @@ run_ansible_playbook() {
   echo "******** ------------"
   pipenv_init
   echo
- 
+
   echo "******** ----------------"
   echo "******** Init vault file "
   echo "******** ----------------"
