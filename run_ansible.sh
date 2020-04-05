@@ -113,6 +113,8 @@ pipenv_init() {
   # try to load pyenv before checking (in case bash_profile,bashrc etc. not working)
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
 
   pyenv_installed=$(check_installed_no_exit pyenv)
   if [[ $pyenv_installed == 'MISSING' ]]; then
@@ -126,7 +128,7 @@ pipenv_init() {
           sudo apt-get update
 
           echo '------ install pyenv prereqs'
-          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev 
 
           echo '------ install pyenv as user'
           curl https://pyenv.run | bash
