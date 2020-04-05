@@ -110,6 +110,10 @@ check_installed_no_exit() {
 }
 
 pipenv_init() {
+  # try to load pyenv before checking (in case bash_profile,bashrc etc. not working)
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
+
   pyenv_installed=$(check_installed_no_exit pyenv)
   if [[ $pyenv_installed == 'MISSING' ]]; then
 
@@ -137,6 +141,7 @@ pipenv_init() {
 
   fi
 
+  # ensure that pyenv is loaded
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
 
