@@ -117,10 +117,10 @@ pipenv_init() {
     curl https://pyenv.run | bash
     echo '------ enable pyenv to run'
     echo -en 'export PATH="/home/vagrant/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
   fi
 
+  export PYENV_ROOT="$HOME/.pyenv"
+  export PATH="$PYENV_ROOT/bin:$PATH"
 
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
