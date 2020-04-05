@@ -118,14 +118,16 @@ pipenv_init() {
         ;;
 
       Linux)
-        echo '------ install pyenv prereqs'
-        sudo DEBIAN_FRONTEND=noninteractive apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+        if [[ "$(which apt)" != "" ]]; then
+          echo '------ install pyenv prereqs'
+          sudo DEBIAN_FRONTEND=noninteractive apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
-        echo '------ install pyenv as user'
-        curl https://pyenv.run | bash
+          echo '------ install pyenv as user'
+          curl https://pyenv.run | bash
 
-        echo '------ enable pyenv from bashrc'
-        echo -en 'export PATH="/home/vagrant/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
+          echo '------ enable pyenv from bashrc'
+          echo -en 'export PATH="/home/vagrant/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
+        fi
 
         ;;
     esac
