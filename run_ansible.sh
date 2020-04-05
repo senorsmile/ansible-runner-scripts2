@@ -119,6 +119,8 @@ pipenv_init() {
 
       Linux)
         if [[ "$(which apt)" != "" ]]; then
+          sudo apt-get update
+
           echo '------ install pyenv prereqs'
           sudo DEBIAN_FRONTEND=noninteractive apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
 
