@@ -110,7 +110,18 @@ check_installed_no_exit() {
 }
 
 pipenv_init() {
-  check_installed pyenv
+  pyenv_installed=$(check_installed_no_exit pyenv)
+  if [[ $pyenv_installed == 'MISSING' ]]; then
+
+    echo '------ install pyenv as user'
+    curl https://pyenv.run | bash
+    echo '------ enable pyenv to run'
+    echo -en 'export PATH=\"/home/vagrant/.pyenv/bin:$PATH\"\neval \"$(pyenv init -)\"\neval \"$(pyenv virtualenv-init -)\"' >> $HOME/.bashrc
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+  fi
+
+
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
