@@ -115,8 +115,10 @@ pipenv_init() {
     # try to load pyenv before checking (in case bash_profile,bashrc etc. not working)
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
+    set +e
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
+    set -e
 
   else
     case "$(uname -s)" in
@@ -143,8 +145,10 @@ pipenv_init() {
     # load  pyenv after installation
     export PYENV_ROOT="$HOME/.pyenv"
     export PATH="$PYENV_ROOT/bin:$PATH"
+    set +e
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
+    set -e
 
   fi
 
