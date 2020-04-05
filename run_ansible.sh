@@ -110,15 +110,15 @@ check_installed_no_exit() {
 }
 
 pipenv_init() {
-  # try to load pyenv before checking (in case bash_profile,bashrc etc. not working)
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
-  eval "$(pyenv virtualenv-init -)"
 
-  pyenv_installed=$(check_installed_no_exit pyenv)
-  if [[ $pyenv_installed == 'MISSING' ]]; then
+  if [[ -d $HOME/.pyenv ]]; then
+    # try to load pyenv before checking (in case bash_profile,bashrc etc. not working)
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
 
+  else
     case "$(uname -s)" in
       Darwin)
         ;;
@@ -140,12 +140,14 @@ pipenv_init() {
         ;;
     esac
 
+    # load  pyenv after installation
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
 
   fi
 
-  # ensure that pyenv is loaded
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
 
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
