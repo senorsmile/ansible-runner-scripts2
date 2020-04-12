@@ -10,7 +10,7 @@ fi
 
 sitefile="${SITEFILE:-site.yml}"
 ansiblever="${ANSIBLEVER:-2.9}"
-ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC]
+ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC, INVENTORY]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
 
 
