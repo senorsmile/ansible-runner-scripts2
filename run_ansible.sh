@@ -393,6 +393,14 @@ run_ansible_playbook() {
         ${INOPTS[@]}
       )
       pipenv run  ${opts[@]}
+  elif [[ $ansiblemode == 'INVENTORY' ]]; then
+      opts=(
+        ansible-inventory
+        -i "${inventorydir}"
+        ${VAULTOPTS}
+        ${INOPTS[@]}
+      )
+      pipenv run ${opts[@]}
   else
       echo "Invalid ansiblemode=${ansiblemode}"
       echo "Valid options:"
