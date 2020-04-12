@@ -3,6 +3,7 @@
 set -euo pipefail # bash strict mode
 
 INOPTS=("$@")
+EXTRAOPTS=("")
 
 if [[ ${#INOPTS[@]} -eq 0 ]]; then
   INOPTS=("")
@@ -12,6 +13,7 @@ sitefile="${SITEFILE:-site.yml}"
 ansiblever="${ANSIBLEVER:-2.9}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC, INVENTORY]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
+# NB: you can define EXTRAOPTS in order to e.g. load multiple inventories
 
 
 # TODO: remove this?
@@ -379,7 +381,7 @@ run_ansible_playbook() {
         --diff
         ${VAULTOPTS}
         "${sitefile}"
-        #--become
+        ${EXTRAOPTS[@]}
         ${INOPTS[@]}
       )
       pipenv run ${opts[@]}
@@ -389,7 +391,7 @@ run_ansible_playbook() {
         -i "${inventorydir}"
         --diff
         ${VAULTOPTS}
-        #--become
+        ${EXTRAOPTS[@]}
         ${INOPTS[@]}
       )
       pipenv run  ${opts[@]}
@@ -398,6 +400,7 @@ run_ansible_playbook() {
         ansible-inventory
         -i "${inventorydir}"
         ${VAULTOPTS}
+        ${EXTRAOPTS[@]}
         ${INOPTS[@]}
       )
       pipenv run ${opts[@]}
