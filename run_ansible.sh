@@ -13,6 +13,7 @@ sitefile="${SITEFILE:-site.yml}"
 ansiblever="${ANSIBLEVER:-2.9}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC, INVENTORY]
 extrainit="${EXTRAINIT:-_init_vars.sh}"
+inventorydisable="${INVENTORYDISABLE:-false}"
 # NB: you can define EXTRAOPTS in order to e.g. load multiple inventories
 
 
@@ -47,14 +48,10 @@ symlink_src_dir() {
 }
 
 inventory_checkout() {
-  if [[ "${INVENTORYREPO+DEFINED}" ]]; then
+  # do nothing if inventoryrepo is not defined or it is disabled
+  if [[ "${inventoryrepo+DEFINED}" && $inventorydisable == "false" ]]; then
     inventoryrepo="${INVENTORYREPO}"
-  fi
-
-  inventoryver="${INVENTORYVER:-master}"
-
-  # do nothing if inventoryrepo is not defined
-  if [[ "${inventoryrepo+DEFINED}" ]]; then
+    inventoryver="${INVENTORYVER:-master}"
 
     inventoryrepo_name=$(
       echo "${inventoryrepo}" |
@@ -354,16 +351,16 @@ run_ansible_playbook() {
   echo "******** Inventory Load "
   echo "******** ---------------"
   # if using repo for central inventory,
-  # redefine inventorydir
-  if [[ "${inventoryrepo+DEFINED}" ]]; then
+  if [[ "${inventoryrepo+DEFINED}" && $inventorydisable == "false" ]]; then
+    # redefine inventorydir
     inventorydir="${inventorydir}/${inventoryrepo_name}"
-  fi
 
-  INVOUTPUT=$(pipenv run ansible localhost -i "${inventorydir}" --list-hosts 2>&1)
-  if [[ "${INVOUTPUT}" == *"No inventory was parsed"* ]]; then
-    echo "*** Inventory Load NOT Successful"
-  else
-    echo "*** Inventory Load NOT Successful"
+    INVOUTPUT=$(pipenv run ansible localhost -i "${inventorydir}" --list-hosts 2>&1)
+    if [[ "${INVOUTPUT}" == *"No inventory was parsed"* ]]; then
+      echo "*** Inventory Load NOT Successful"
+    else
+      echo "*** Inventory Load NOT Successful"
+    fi
   fi
   #pipenv run ansible localhost -i "${inventorydir}" --list-hosts >/dev/null && {
   #  echo "*** Inventory Load Successful"
