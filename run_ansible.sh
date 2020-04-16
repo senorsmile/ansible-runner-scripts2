@@ -4,10 +4,6 @@ set -euo pipefail # bash strict mode
 
 EXTRAOPTS=("")
 
-if [[ ${#INOPTS[@]} -eq 0 ]]; then
-  INOPTS=("")
-fi
-
 sitefile="${SITEFILE:-site.yml}"
 ansiblever="${ANSIBLEVER:-2.9}"
 ansiblemode="${ANSIBLEMODE:-PLAYBOOK}" # [PLAYBOOK, ADHOC, INVENTORY]
