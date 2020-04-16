@@ -2,7 +2,6 @@
 
 set -euo pipefail # bash strict mode
 
-INOPTS=("$@")
 EXTRAOPTS=("")
 
 if [[ ${#INOPTS[@]} -eq 0 ]]; then
@@ -22,6 +21,18 @@ inventorydisable="${INVENTORYDISABLE:-false}"
 #    source "$HOME/.bashrc"
 #fi
 
+
+quote() {
+  declare -a params
+  for param; do
+    if [[ -z "${param}" || "${param}" =~ [^A-Za-z0-9_@%+=:,./-] ]]; then
+      params+=("'${param//\'/\'\"\'\"\'}'")
+    else
+      params+=("${param}")
+    fi
+  done
+  echo "${params[*]}"
+}
 
 save_dir() {
   ## save current directory
@@ -371,6 +382,7 @@ run_ansible_playbook() {
   echo "******** Ansible run "
   echo "******** ------------"
 
+  local INOPTS=$(quote "$@")
   if [[ $ansiblemode == 'PLAYBOOK' ]]; then
       opts=(
         ansible-playbook
@@ -411,7 +423,7 @@ run_ansible_playbook() {
 }
 
 main() {
-  run_ansible_playbook
+  run_ansible_playbook "$@"
 }
 
-time main
+time main "$@"
