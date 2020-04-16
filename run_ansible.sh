@@ -387,7 +387,7 @@ run_ansible_playbook() {
         ${VAULTOPTS}
         "${sitefile}"
         ${EXTRAOPTS[@]}
-        ${INOPTS[@]}
+        ${INOPTS}
       )
       pipenv run ${opts[@]}
   elif [[ $ansiblemode == 'ADHOC' ]]; then
@@ -397,7 +397,7 @@ run_ansible_playbook() {
         --diff
         ${VAULTOPTS}
         ${EXTRAOPTS[@]}
-        ${INOPTS[@]}
+        ${INOPTS}
       )
       pipenv run  ${opts[@]}
   elif [[ $ansiblemode == 'INVENTORY' ]]; then
@@ -406,7 +406,7 @@ run_ansible_playbook() {
         -i "${inventorydir}"
         ${VAULTOPTS}
         ${EXTRAOPTS[@]}
-        ${INOPTS[@]}
+        ${INOPTS}
       )
       pipenv run ${opts[@]}
   else
