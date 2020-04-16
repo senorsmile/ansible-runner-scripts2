@@ -381,6 +381,7 @@ run_ansible_playbook() {
         ${EXTRAOPTS[@]}
         ${INOPTS[@]}
       )
+      set -x
       pipenv run ${opts[@]}
   elif [[ $ansiblemode == 'ADHOC' ]]; then
       opts=(
@@ -391,6 +392,7 @@ run_ansible_playbook() {
         ${EXTRAOPTS[@]}
         ${INOPTS[@]}
       )
+      set -x
       pipenv run  ${opts[@]}
   elif [[ $ansiblemode == 'INVENTORY' ]]; then
       opts=(
@@ -400,6 +402,7 @@ run_ansible_playbook() {
         ${EXTRAOPTS[@]}
         ${INOPTS[@]}
       )
+      set -x
       pipenv run ${opts[@]}
   else
       echo "Invalid ansiblemode=${ansiblemode}"
