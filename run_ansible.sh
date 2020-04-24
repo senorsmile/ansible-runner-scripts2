@@ -122,20 +122,44 @@ pipenv_init() {
   else
     case "$(uname -s)" in
       Darwin)
+        curl https://pyenv.run | bash
         ;;
 
       Linux)
         if [[ "$(which apt)" != "" ]]; then
           sudo apt-get update
 
+          echo "---------------------------------------------"
           echo '------ install pyenv prereqs'
+          echo "---------------------------------------------"
           sudo DEBIAN_FRONTEND=noninteractive apt-get -y install make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev 
 
+          echo "---------------------------------------------"
           echo '------ install pyenv as user'
+          echo "---------------------------------------------"
           curl https://pyenv.run | bash
 
-          echo '------ enable pyenv from bashrc'
-          echo -en 'export PATH="/home/vagrant/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
+          my_shell=$(echo "$SHELL")
+          if [[ "$my_shell" =~  "bash" ]]; then
+            echo "---------------------------------------------"
+            echo '------ enable pyenv from bashrc'
+            echo "---------------------------------------------"
+            echo -en 'export PATH="/home/vagrant/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
+          else
+            echo "---------------------------------------------"
+            echo '------ enable pyenv from bashrc'
+            echo "---------------------------------------------"
+            echo "ERROR: Your shell: ${SHELL} is not yet accounted for."  
+            echo "       Please check to see that pyenv is initialized properly in your shell's init files."
+            echo "       See more information here: https://github.com/pyenv/pyenv#basic-github-checkout"
+          fi
+        else
+          echo "WARNING: untested linux distro.  May need modifications to work."
+
+          echo "---------------------------------------------"
+          echo '------ install pyenv as user'
+          echo "---------------------------------------------"
+          curl https://pyenv.run | bash
         fi
 
         ;;
@@ -149,8 +173,10 @@ pipenv_init() {
     eval "$(pyenv virtualenv-init -)"
     set -u
 
+
   fi
 
+  pyenv install
 
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
