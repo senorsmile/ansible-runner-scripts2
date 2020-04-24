@@ -49,7 +49,7 @@ symlink_src_dir() {
 
 inventory_checkout() {
   # do nothing if inventoryrepo is not defined or it is disabled
-  if [[ "${inventoryrepo+DEFINED}" && $inventorydisable == "false" ]]; then
+  if [[ "${INVENTORYREPO+DEFINED}" && $inventorydisable == "false" ]]; then
     inventoryrepo="${INVENTORYREPO}"
     inventoryver="${INVENTORYVER:-master}"
 
