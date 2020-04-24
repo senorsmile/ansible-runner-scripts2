@@ -108,8 +108,7 @@ check_installed_no_exit() {
   fi
 }
 
-pipenv_init() {
-
+pyenv_init() {
   if [[ -d $HOME/.pyenv ]]; then
     # try to load pyenv before checking (in case bash_profile,bashrc etc. not working)
     export PYENV_ROOT="$HOME/.pyenv"
@@ -180,7 +179,9 @@ pipenv_init() {
   #if [[ -f .python-version ]]; then 
   #  pyenv install
   #fi
+}
 
+pipenv_init() {
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
   if [[ $pipenv_installed == 'MISSING' ]]; then
@@ -347,6 +348,12 @@ run_ansible_playbook() {
   echo "******** Inventory Checkout "
   echo "******** -------------------"
   inventory_checkout
+  echo
+
+  echo "******** ------------"
+  echo "******** Init pyenv "
+  echo "******** ------------"
+  pyenv_init
   echo
 
   echo "******** ------------"
