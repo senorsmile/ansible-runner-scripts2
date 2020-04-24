@@ -176,7 +176,9 @@ pipenv_init() {
 
   fi
 
-  pyenv install
+  if [[ -f .python-version ]]; then 
+    pyenv install
+  fi
 
   check_installed python3
   pipenv_installed=$(check_installed_no_exit pipenv)
