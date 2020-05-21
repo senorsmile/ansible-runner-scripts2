@@ -143,7 +143,7 @@ pyenv_init() {
             echo "---------------------------------------------"
             echo '------ enable pyenv from bashrc'
             echo "---------------------------------------------"
-            echo -en 'export PATH="/home/vagrant/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
+            echo -en 'export PATH="$HOME/.pyenv/bin:$PATH"\neval "$(pyenv init -)"\neval "$(pyenv virtualenv-init -)"' >> $HOME/.bashrc
           else
             echo "---------------------------------------------"
             echo '------ enable pyenv from bashrc'
