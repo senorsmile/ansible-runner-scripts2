@@ -426,10 +426,10 @@ run_ansible_playbook() {
         --diff
         ${VAULTOPTS}
         ${EXTRAOPTS[@]}
-        ${INOPTS[@]}
+        "${INOPTS[@]}"
       )
       set -x
-      pipenv run  ${opts[@]}
+      pipenv run  "${opts[@]}"
   elif [[ $ansiblemode == 'INVENTORY' ]]; then
       opts=(
         ansible-inventory
