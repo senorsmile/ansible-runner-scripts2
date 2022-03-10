@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# Plaintext vault decryption key, not checked into SCM
-VAULTFILE="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
-extrainit="${EXTRAINIT:-_init_vars.sh}"
-
-
 command="$1"; shift
 file="$1"
 
@@ -18,10 +13,13 @@ if [[ $command == '' ]]; then
   exit 1
 fi
 
+extrainit="${EXTRAINIT:-_init_vars.sh}"
 if [[ -f "${extrainit}" ]]; then
   source "${extrainit}"
 fi
 
+# Plaintext vault decryption key, not checked into SCM
+VAULTFILE="${VAULTFILE:-$HOME/.ssh/creds/ansible_vault.txt}"
 VAULTOPTS="--vault-password-file=$VAULTFILE"
 
 pipenv run ansible-vault $command "${file}" $VAULTOPTS
