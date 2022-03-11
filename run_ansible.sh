@@ -48,16 +48,16 @@ symlink_src_dir() {
 }
 
 inventory_checkout() {
+  inventoryrepo="${INVENTORYREPO}"
+  inventoryver="${INVENTORYVER:-master}"
+
+  inventoryrepo_name=$(
+    echo "${inventoryrepo}" |
+    perl -lane 'print $1 if /.*\/([\w-]+)\.git/'
+  )
+
   # do nothing if inventoryrepo is not defined or it is disabled
   if [[ "${INVENTORYREPO+DEFINED}" && $inventorydisable == "false" ]]; then
-    inventoryrepo="${INVENTORYREPO}"
-    inventoryver="${INVENTORYVER:-master}"
-
-    inventoryrepo_name=$(
-      echo "${inventoryrepo}" |
-      perl -lane 'print $1 if /.*\/([\w-]+)\.git/'
-    )
-
     if [[ ! -d "${inventorydir}" ]]; then
       mkdir "${inventorydir}"
     fi
@@ -387,15 +387,16 @@ run_ansible_playbook() {
   echo "******** Inventory Load "
   echo "******** ---------------"
   # if using repo for central inventory,
-  if [[ "${inventoryrepo+DEFINED}" && $inventorydisable == "false" ]]; then
+  if [[ "${inventoryrepo+DEFINED}" ]]; then
     # redefine inventorydir
-    inventorydir="${inventorydir}/${inventoryrepo_name}"
+    inventorydir="${inventorydir%/}" # remove extra slash at end if present
+    inventorydir="${inventorydir}/${inventoryrepo_name}/"
 
     INVOUTPUT=$(pipenv run ansible localhost -i "${inventorydir}" --list-hosts 2>&1)
     if [[ "${INVOUTPUT}" == *"No inventory was parsed"* ]]; then
       echo "*** Inventory Load NOT Successful"
     else
-      echo "*** Inventory Load NOT Successful"
+      echo "*** Inventory Load Successful"
     fi
   fi
   #pipenv run ansible localhost -i "${inventorydir}" --list-hosts >/dev/null && {
