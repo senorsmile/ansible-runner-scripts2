@@ -306,6 +306,11 @@ pipenv_init() {
           save_dir
           cd "${realdir}/ansible_${ansiblever}"
           pipenv install
+					# remove ansible-core if 2.9 or below
+					ansible_29_or_below=$(perl -s -e 'print "true\n" if ${val1} <= ${val2}' -- -val1="ansible_ver" -val2="2.9")
+					if [[ $ansible_29_or_below == "true" ]]; then
+						pipenv uninstall ansible-core || echo
+					fi
           return_dir
         fi
 
@@ -321,6 +326,11 @@ pipenv_init() {
       fi
       if [[ ! -f "./Pipfile.lock" ]]; then
         pipenv install
+				# remove ansible-core if 2.9 or below
+				ansible_29_or_below=$(perl -s -e 'print "true\n" if ${val1} <= ${val2}' -- -val1="ansible_ver" -val2="2.9")
+				if [[ $ansible_29_or_below == "true" ]]; then
+					pipenv uninstall ansible-core || echo
+				fi
       fi
   fi
 
