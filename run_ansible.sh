@@ -327,7 +327,7 @@ pipenv_init() {
 
 	# remove ansible-core if 2.9 or below
 	ansible_29_or_below=$(perl -s -e 'print "true\n" if ${val1} <= ${val2}' -- -val1="ansible_ver" -val2="2.9")
-	if [[ $ansible_29_or_below == "true" && $ansible_ver == "2.9" ]]; then
+	if [[ $ansible_29_or_below == "true" ]] && [[ $ansible_ver == "2.9" ]]; then
 		pipenv uninstall ansible-core
 		pipenv install ansible==2.9.27
 	else
