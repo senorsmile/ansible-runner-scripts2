@@ -341,6 +341,12 @@ run_ansible_playbook() {
   load_extra_init
   echo
 
+  # convert PYTHON_USER_PIPENV to lowercase; bash 4.0+ only
+  if [[ "${PYTHON_USE_PIPENV,,}" == 'false' ]]; then 
+    pipenv_command=''
+  else
+    pipenv_command='pipenv run'
+  fi
   inventorydir="${INVENTORYDIR:-./inventory/}"
   pipfile_symlink="${PIPFILE_SYMLINK:-ENABLED}"
 
@@ -353,13 +359,17 @@ run_ansible_playbook() {
   echo "******** ------------"
   echo "******** Init pyenv "
   echo "******** ------------"
-  pyenv_init
+  if [[ "${PYTHON_USE_PYENV,,}" != 'false' ]]; then
+    pyenv_init
+  fi
   echo
 
   echo "******** ------------"
   echo "******** Init pipenv "
   echo "******** ------------"
-  pipenv_init
+  if [[ "${PYTHON_USE_PIPENV,,}" != 'false' ]]; then
+    pipenv_init
+  fi
   echo
 
   echo "******** ----------------"
@@ -380,7 +390,7 @@ run_ansible_playbook() {
   echo "******** ----------------"
   echo "******** Ansible version "
   echo "******** ----------------"
-  pipenv run ansible --version
+  eval "${pipenv_command} ansible --version
   echo
 
   echo "******** ---------------"
@@ -392,14 +402,14 @@ run_ansible_playbook() {
     inventorydir="${inventorydir%/}" # remove extra slash at end if present
     inventorydir="${inventorydir}/${inventoryrepo_name}/"
 
-    INVOUTPUT=$(pipenv run ansible localhost -i "${inventorydir}" --list-hosts 2>&1)
+    INVOUTPUT=$(eval "${pipenv_command} ansible localhost -i "${inventorydir}" --list-hosts 2>&1)
     if [[ "${INVOUTPUT}" == *"No inventory was parsed"* ]]; then
       echo "*** Inventory Load NOT Successful"
     else
       echo "*** Inventory Load Successful"
     fi
   fi
-  #pipenv run ansible localhost -i "${inventorydir}" --list-hosts >/dev/null && {
+  #eval "${pipenv_command} ansible localhost -i "${inventorydir}" --list-hosts >/dev/null && {
   #  echo "*** Inventory Load Successful"
   #}
   echo
@@ -419,7 +429,7 @@ run_ansible_playbook() {
         ${INOPTS[@]}
       )
       set -x
-      pipenv run ${opts[@]}
+      eval "${pipenv_command} ${opts[@]}
   elif [[ $ansiblemode == 'ADHOC' ]]; then
       opts=(
         ansible
@@ -430,7 +440,7 @@ run_ansible_playbook() {
         "${INOPTS[@]}"
       )
       set -x
-      pipenv run  "${opts[@]}"
+      eval "${pipenv_command}  "${opts[@]}"
   elif [[ $ansiblemode == 'INVENTORY' ]]; then
       opts=(
         ansible-inventory
@@ -440,7 +450,7 @@ run_ansible_playbook() {
         ${INOPTS[@]}
       )
       set -x
-      pipenv run ${opts[@]}
+      eval "${pipenv_command} ${opts[@]}
   else
       echo "Invalid ansiblemode=${ansiblemode}"
       echo "Valid options:"
